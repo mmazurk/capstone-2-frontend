@@ -9,6 +9,8 @@ import LoginForm from "./auth/LoginForm";
 import Logout from "./auth/LogOut";
 import SignUpForm from "./auth/SignUpForm";
 import ProfileForm from "./profiles/ProfileForm";
+import MyPhotoAPI from "./api/api";
+import OpenAiAPI from "./api/externalApi";
 
 function App() {
   const [userData, setUserData] = useState([]);
