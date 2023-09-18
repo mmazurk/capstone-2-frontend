@@ -11,25 +11,44 @@ import SignUpForm from "./auth/SignUpForm";
 import ProfileForm from "./profiles/ProfileForm";
 import MyPhotoAPI from "./api/api";
 import OpenAiAPI from "./api/externalApi";
+import UserContext from "./auth/userContext";
+
 
 function App() {
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null)
 
-  async function login(userData) {
-    console.log("Login!")
+  // You want to return either a "success" status or the errors
+  // Then you can display them on the form
+
+  async function login(formData) {
+    try {
+      const token = await MyPhotoAPI.authUser(formData);
+      if (token) {
+        setToken(token);
+        setIsLoggedIn(true);
+      }
+    } catch (err) {
+      console.log("Didn't work because", err);
+    }
   }
 
   async function logout(userData) {
-    console.log("Logout!")
+    setToken(null);
+    setIsLoggedIn(false);
   }
 
   async function signUp(formData) {
-    console.log("Signup!")
+    const token = await MyPhotoAPI.signUpUser(formData);
+    if(token) {
+      setToken(token);
+    } 
   }
 
   return (
     <div>
+      <UserContext.Provider value={{token: token}}>
       <BrowserRouter>
         <Navigation isLoggedIn={isLoggedIn} />
         <main>
@@ -49,6 +68,7 @@ function App() {
           </Routes>
         </main>
       </BrowserRouter>
+      </UserContext.Provider>
     </div>
   );
 }
