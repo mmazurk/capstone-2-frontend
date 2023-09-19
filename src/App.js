@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navigation from "./navigation/Navigation";
 import HomePage from "./homepage/HomePage";
 import UserLibrary from "./user-library/UserLibrary";
-import SearchList from "./searches/SearchList";
+import SearchPage from "./searches/SearchPage";
 import SearchCardDetail from "./searches/SearchCardDetail";
 import LoginForm from "./auth/LoginForm";
 import Logout from "./auth/LogOut";
@@ -13,14 +13,10 @@ import MyPhotoAPI from "./api/api";
 import OpenAiAPI from "./api/externalApi";
 import UserContext from "./auth/userContext";
 
-
 function App() {
   const [userData, setUserData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null)
-
-  // You want to return either a "success" status or the errors
-  // Then you can display them on the form
 
   async function login(formData) {
     try {
@@ -28,9 +24,10 @@ function App() {
       if (token) {
         setToken(token);
         setIsLoggedIn(true);
+        return "success";
       }
     } catch (err) {
-      console.log("Didn't work because", err);
+      return err; 
     }
   }
 
@@ -55,7 +52,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/library" element={<UserLibrary itemList={userData.searches} />} />
-            <Route path="/searches" element={<SearchList />} />
+            <Route path="/searches" element={<SearchPage />} />
             <Route path="/searches/:searchId" element={<SearchCardDetail />} />
             <Route path="/login" element={<LoginForm login={login} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />

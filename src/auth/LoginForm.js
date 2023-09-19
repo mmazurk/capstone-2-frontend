@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import FormItem from "./FormItem";
+import Alert from "../common/Alert";
 
 function LoginForm({ login }) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function LoginForm({ login }) {
   // then you can surface them below in your form if they exist using ternary
 
   const [formData, setFormData] = useState(initialState);
+  const [formError, setFormError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,11 +26,12 @@ function LoginForm({ login }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(formData).then(function (result) {
-      if (result) {
+    login(formData).then(function (status) {
+      if (status === "success") {
         navigate("/");
       } else {
-        console.log("And just to remind you, that didn't work");
+        console.log("Login did not work");
+        setFormError(status);
       }
     });
   };
@@ -48,6 +51,7 @@ function LoginForm({ login }) {
                   key={item}
                 />
               ))}
+              {formError ? <Alert type="danger" messages={[formError]} /> : null}
               <button onClick={handleSubmit} className="btn btn-primary">
                 Submit
               </button>

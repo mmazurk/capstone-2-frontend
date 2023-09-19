@@ -30,6 +30,6 @@ class OpenAiAPI {
 
 }
 
-OpenAiAPI.token = process.env.OPEN_API_TOKEN;
+OpenAiAPI.token = process.env.REACT_APP_OPEN_API_TOKEN;
 
 export default OpenAiAPI; 
