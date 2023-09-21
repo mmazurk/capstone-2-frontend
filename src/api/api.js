@@ -58,7 +58,7 @@ class MyPhotoAPI {
   }
 
   // get specific prompt
-  static async getPrompts(id) {
+  static async getPromptsById(id) {
     let res = await this.request(`prompts/${id}`);
     return res.prompt;
   }

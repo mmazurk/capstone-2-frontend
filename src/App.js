@@ -4,7 +4,7 @@ import Navigation from "./navigation/Navigation";
 import HomePage from "./homepage/HomePage";
 import UserLibrary from "./user-library/UserLibrary";
 import SearchPage from "./searches/SearchPage";
-import SearchCardDetail from "./searches/SearchCardDetail";
+import SearchPhotoResult from "./searches/SearchPhotoResult";
 import LoginForm from "./auth/LoginForm";
 import Logout from "./auth/LogOut";
 import SignUpForm from "./auth/SignUpForm";
@@ -53,7 +53,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/library" element={<UserLibrary itemList={userData.searches} />} />
             <Route path="/searches" element={<SearchPage />} />
-            <Route path="/searches/:searchId" element={<SearchCardDetail />} />
+            <Route path="/searches/:searchId" element={<SearchPhotoResult />} />
             <Route path="/login" element={<LoginForm login={login} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
             <Route path="/signup" element={<SignUpForm signUp={signUp} />} />

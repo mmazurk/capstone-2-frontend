@@ -37,7 +37,7 @@ function SearchPage() {
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div className="col">
               <div className="card shadow-sm">
-                <img src={programmer} className='img-fluid'/>
+                <img src={programmer} alt="programmer" className='img-fluid'/>
                   <title>Placeholder</title>
                  <div className="card-body">
                   <p className="card-text">
@@ -66,7 +66,7 @@ function SearchPage() {
 
             <div className="col">
               <div className="card shadow-sm">
-              <img src={landscape} className='img-fluid'/>
+              <img src={landscape} alt="landscape" className='img-fluid'/>
                   <title>Placeholder</title>
                 <div className="card-body">
                   <p className="card-text">
@@ -95,7 +95,7 @@ function SearchPage() {
 
             <div className="col">
               <div className="card shadow-sm">
-              <img src={nightstreet} className='img-fluid'/>
+              <img src={nightstreet} alt="street at night" className='img-fluid'/>
                   <title>Placeholder</title>
                 <div className="card-body">
                   <p className="card-text">
@@ -127,7 +127,7 @@ function SearchPage() {
       <footer className="text-body-secondary py-5">
         <div className="container">
           <p className="float-end mb-1">
-            <a href="#">Back to top</a>
+            <a href="/searches">Back to top</a>
           </p>
           <p className="mb-1">Thank you for using © AI Photo Library!!</p>
         </div>

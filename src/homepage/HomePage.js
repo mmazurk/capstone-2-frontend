@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 // if not then show the page below
 
 function HomePage() {
-    {
+    
         const navigate = useNavigate();
         return (
           <div className="p-5 mb-4 bg-body-secondary rounded-3">
@@ -19,6 +19,7 @@ function HomePage() {
                   <img
                     src="https://images.unsplash.com/photo-1635002964051-740c5f7f14ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80"
                     className="img-fluid"
+                    alt="logo on home page"
                   />
                 </div>
               </div>
@@ -67,7 +68,7 @@ function HomePage() {
           //   </div>
           // </div>
         );
-      }
+      
 }
 
 export default HomePage;
