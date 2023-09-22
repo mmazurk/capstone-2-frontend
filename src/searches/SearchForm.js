@@ -2,7 +2,7 @@ import Alert from "../common/Alert";
 import { useState } from "react";
 import OpenAiAPI from "../api/externalApi";
 
-function SearchForm({prompt, setPhotoURLStatus, setLoading}) {
+function SearchForm({promptInstructions, setPhotoURLStatus, setLoading}) {
 
     const initialState = "";
   
@@ -19,15 +19,14 @@ function SearchForm({prompt, setPhotoURLStatus, setLoading}) {
       setLoading(true);
       
     try {
-        // const photoURL = await OpenAiAPI.getPhoto(formData);
-        const testUrl="https://oaidalleapiprodscus.blob.core.windows.net/private/org-F06Z84gXSG7zUYqTfm99vbjb/user-I85LUcp6z1K6vw7X7yMPwiuu/img-2uPoEcEYROdWHA8KbiGyS10h.png?st=2023-09-22T01%3A54%3A45Z&se=2023-09-22T03%3A54%3A45Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-21T22%3A09%3A29Z&ske=2023-09-22T22%3A09%3A29Z&sks=b&skv=2021-08-06&sig=%2Bek8VWgWruAvWRScKXunKCnQ3VygKB1b5eJwQbeGwW4%3D"
-        setPhotoURLStatus(testUrl, formData);
+      const photoURL = await OpenAiAPI.getPhoto({prompt: formData, n: 1, size: "1024x1024"});
+        setPhotoURLStatus(photoURL[0].url, formData);
         setLoading(false);
     } catch(err) {
+        console.error("The API did not load and you got", err);
         setFormError(err)
         setLoading(false);
     }
-
       setFormData(initialState);
     };
 
@@ -39,7 +38,7 @@ function SearchForm({prompt, setPhotoURLStatus, setLoading}) {
             <div className="col-lg-6 col-md-8 mx-auto">
               <h1 className="display-5 fw-bold">Search for Photo</h1>
               <p className="lead fw-light">
-                {prompt}
+                {promptInstructions}
               </p>
   
               <div className="row">

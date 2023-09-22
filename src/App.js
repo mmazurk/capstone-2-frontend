@@ -1,24 +1,78 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
 import Navigation from "./navigation/Navigation";
 import HomePage from "./homepage/HomePage";
 import UserLibrary from "./user-library/UserLibrary";
 import SearchPage from "./searches/SearchPage";
-import SearchPhotoResult from "./searches/SearchPhotoResult";
 import LoginForm from "./auth/LoginForm";
 import Logout from "./auth/LogOut";
 import SignUpForm from "./auth/SignUpForm";
 import ProfileForm from "./profiles/ProfileForm";
 import MyPhotoAPI from "./api/api";
-import OpenAiAPI from "./api/externalApi";
 import UserContext from "./auth/userContext";
+import LoadingIconHome from "./common/LoadingIconHome";
 
 function App() {
-  const [userData, setUserData] = useState([]);
+  const [infoLoaded, setInfoLoaded] = useState(true);
+  const [user, setUser] = useState(null);
+  const [userPrompts, setUserPrompts] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null)
 
-  async function login(formData) {
+  useEffect(() => {
+  console.log("Current user", user);
+  console.log("Current userPrompts", userPrompts);
+  console.log("Current isLoggedIn", isLoggedIn)
+  console.log("Current token: ", token);
+}, [token])
+
+    // this was added
+  useEffect(
+    function loadUserInfo() {
+      async function getCurrentUser() {
+        if (token) {
+          try {
+            let { username } = jwtDecode(token);
+            MyPhotoAPI.token = token;
+            let currentUser = await MyPhotoAPI.getUser(username);
+            setUser(currentUser.username);
+            let currentPrompts = await MyPhotoAPI.getPrompts();
+            setUserPrompts(currentPrompts);
+          } catch (err) {
+            console.error("App loadUserInfo: problem loading", err);
+            setUser(null);
+          }
+        }
+        setInfoLoaded(true);
+      }
+      setInfoLoaded(false);
+      getCurrentUser();
+    },
+    [token]
+  );
+
+  // this was changed
+  async function signUp(formData) {
+    try {
+      let token = await MyPhotoAPI.signUpUser(formData);
+      debugger;
+      setToken(token);
+      return { status: true };
+    } catch (error) {
+      console.error("The sign-in did not work.");
+      return { status: false, error };
+    }
+  }
+
+  async function logout(user) {
+    setToken(null);
+    setIsLoggedIn(false);
+    setUserPrompts([]);
+    setUser(null);
+  }
+
+   async function login(formData) {
     try {
       const token = await MyPhotoAPI.authUser(formData);
       if (token) {
@@ -31,57 +85,17 @@ function App() {
     }
   }
 
-
-// TESTING CODE ONLY
-// TESTING CODE ONLY
-// TESTING CODE ONLY
-// TESTING CODE ONLY
-
-  
-  // useEffect(() => {
-  //   async function testAPI() {
-  //     try {
-  //       const photoURL = await OpenAiAPI.getPhoto({prompt: "Image of dogs playing poken", n: 1, size: "1024x1024"});
-  //       console.log(photoURL[0].url);
-  //     } catch (error) {
-  //       console.error("Error fetching the image:", error);
-  //     }
-  //   }
-
-  //   testAPI();
-  // }, []); // The empty dependency array means this useEffect runs once when the component mounts
-
-
-// TESTING CODE ONLY
-// TESTING CODE ONLY
-// TESTING CODE ONLY
-// TESTING CODE ONLY
-
-
-
-  async function logout(userData) {
-    setToken(null);
-    setIsLoggedIn(false);
-  }
-
-  async function signUp(formData) {
-    const token = await MyPhotoAPI.signUpUser(formData);
-    if(token) {
-      setToken(token);
-    } 
-  }
-
+  if(infoLoaded) {
   return (
     <div>
-      <UserContext.Provider value={{token: token}}>
-      <BrowserRouter>
+      <UserContext.Provider value={{token: token, user: user}}>
+      <BrowserRouter> 
         <Navigation isLoggedIn={isLoggedIn} />
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/library" element={<UserLibrary itemList={userData.searches} />} />
+            <Route path="/library" element={<UserLibrary promptList={userPrompts} />} />
             <Route path="/searches" element={<SearchPage />} />
-            <Route path="/searches/result" element={<SearchPhotoResult />} />
             <Route path="/login" element={<LoginForm login={login} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
             <Route path="/signup" element={<SignUpForm signUp={signUp} />} />
@@ -95,7 +109,15 @@ function App() {
       </BrowserRouter>
       </UserContext.Provider>
     </div>
-  );
+  )}
+  else return (
+    <div>
+      <BrowserRouter>
+      <Navigation isLoggedIn={isLoggedIn} />
+      <LoadingIconHome />
+      </BrowserRouter>
+    </div>
+  )
 }
 
 export default App;

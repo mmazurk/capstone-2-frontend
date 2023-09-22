@@ -10,9 +10,6 @@ function LoginForm({ login }) {
     password: "",
   };
 
-  // add another piece of state to track form errors
-  // then you can surface them below in your form if they exist using ternary
-
   const [formData, setFormData] = useState(initialState);
   const [formError, setFormError] = useState(null);
 

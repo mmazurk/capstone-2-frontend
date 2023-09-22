@@ -23,13 +23,13 @@ function SearchPage() {
       </>
       : photoURL ?
       <>
-      <SearchForm prompt="You did it!" setPhotoURLStatus={setPhotoURLStatus} setLoading={setLoading} />
+      <SearchForm promptInstructions="Here is the photo you generated." setPhotoURLStatus={setPhotoURLStatus} setLoading={setLoading} />
       <SearchPhotoResult prompt={prompt} url={photoURL}/> 
       </>
       : (
         <>
           <SearchForm
-            prompt="Type a prompt in the search box below to create images like the sample
+            promptInstructions="Type a prompt in the search box below to create images like the sample
               images below! Make sure and use a descriptive prompt." setPhotoURLStatus={setPhotoURLStatus} setLoading={setLoading}/>
           <SearchExamples />
         </>

@@ -1,35 +1,8 @@
-import { useParams } from "react-router-dom";
 
 function SearchPhotoResult({prompt, url}) {
 
   return (
     <div>
-
-      {/* <section class="pt-4 text-center container">
-        <div class="row py-lg-5">
-          <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="display-5 fw-bold">Photo Results</h1>
-            <p class="lead fw-light">
-              This is the photo you generated! The text you used to generate the
-              photo will be below it.
-            </p>
-
-            <div class="row">
-              <div class="col-md-9">
-                <input
-                  type="text"
-                  id="search"
-                  class="form-control"
-                  placeholder="Enter search term"
-                />
-              </div>
-              <div class="col-md-3">
-                <button class="btn btn-primary w-100">Try Again</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       <section className="album py-0">
         <div className="container">
@@ -55,12 +28,7 @@ function SearchPhotoResult({prompt, url}) {
                       >
                         View
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-secondary"
-                      >
-                        Edit
-                      </button>
+                     <a href={url} download="desired-filename.jpg" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-secondary" role="button">Download Image</a>
                     </div>
                     <small className="text-body-secondary">more text</small>
                   </div>
