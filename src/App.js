@@ -31,6 +31,34 @@ function App() {
     }
   }
 
+
+// TESTING CODE ONLY
+// TESTING CODE ONLY
+// TESTING CODE ONLY
+// TESTING CODE ONLY
+
+  
+  // useEffect(() => {
+  //   async function testAPI() {
+  //     try {
+  //       const photoURL = await OpenAiAPI.getPhoto({prompt: "Image of dogs playing poken", n: 1, size: "1024x1024"});
+  //       console.log(photoURL[0].url);
+  //     } catch (error) {
+  //       console.error("Error fetching the image:", error);
+  //     }
+  //   }
+
+  //   testAPI();
+  // }, []); // The empty dependency array means this useEffect runs once when the component mounts
+
+
+// TESTING CODE ONLY
+// TESTING CODE ONLY
+// TESTING CODE ONLY
+// TESTING CODE ONLY
+
+
+
   async function logout(userData) {
     setToken(null);
     setIsLoggedIn(false);
@@ -53,7 +81,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/library" element={<UserLibrary itemList={userData.searches} />} />
             <Route path="/searches" element={<SearchPage />} />
-            <Route path="/searches/:searchId" element={<SearchPhotoResult />} />
+            <Route path="/searches/result" element={<SearchPhotoResult />} />
             <Route path="/login" element={<LoginForm login={login} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
             <Route path="/signup" element={<SignUpForm signUp={signUp} />} />

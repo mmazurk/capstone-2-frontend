@@ -24,7 +24,7 @@ class OpenAiAPI {
   }
 
   static async getPhoto(formData) {
-    let res = await this.request(`generations`, formData);
+    let res = await this.request(`generations`, formData, "post");
     return res.data;
   }
 
