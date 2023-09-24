@@ -1,13 +1,37 @@
 
+import { useEffect, useState } from 'react';
+import MyPhotoAPI from '../api/api';
 import './userLibrary.css'
 import UserPrompt from './UserPrompt';
 
-function UserLibrary({promptList}) {
+function UserLibrary({ promptList }) {
+  const [prompts, setPrompts] = useState([]);
 
-    // converting the date to something we can read
-    const formattedPromptList = promptList.map((item) => {
-        return { ...item, date: new Date(item.date).toLocaleString()}
-      })
+  useEffect(() => {
+    const formattedPrompts = formatPrompts(promptList);
+    setPrompts(formattedPrompts);
+  }, [promptList])
+
+  // helper function to format promptdates
+  function formatPrompts(list) {
+    return list.map((item) => {
+      return { ...item, date: new Date(item.date).toLocaleString() };
+    });
+  }
+
+  async function remove(promptID) {
+    const originalPrompts = [...prompts];
+    const refreshedPrompts = prompts.filter((item) => item.promptID !== promptID)
+    setPrompts(refreshedPrompts);
+    try {
+      let status = await MyPhotoAPI.deletePrompt(promptID);
+      console.log(status);
+
+    } catch (err) {
+      console.log("You just failed with error(s):", err);
+      setPrompts(originalPrompts);
+    }
+  }
 
   return (
     <div className="mark-1">
@@ -34,7 +58,7 @@ function UserLibrary({promptList}) {
                   >
                     <img
                       src="https://images.unsplash.com/photo-1521806463-65fbb1ab7ff9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80"
-                      alt="Generic placeholder image"
+                      alt="Generic placeholder"
                       className="img-fluid img-thumbnail mt-4 mb-2"
                       style={{ zIndex: "1" }}
                     />
@@ -72,17 +96,20 @@ function UserLibrary({promptList}) {
                   </div>
                 </div>
 
-
-
                 <div className="card-body p-4 text-black">
                   <div className="mb-2">
                     <p className="fs-4 fw-bold mb-1">Recent Prompts</p>
                     <div className="p-4" style={{ backgroundColor: "#f8f9fa" }}>
                       <ul className="list-group">
-                        
-                        {formattedPromptList.map(item => 
-                            <UserPrompt date={item.date} promptText={item.promptText} key={item.promptID} />)}
-
+                        {prompts.map((item) => (
+                          <UserPrompt
+                            date={item.date}
+                            promptText={item.promptText}
+                            key={item.promptID}
+                            remove={() => remove(item.promptID)}
+                          />
+                        ))}
+{/* 
                         <li className="list-group-item d-flex justify-content-between align-items-center">
                           <span>
                             <strong>[[ 2023-09-15: ]]</strong>&nbsp;This would
@@ -97,8 +124,7 @@ function UserLibrary({promptList}) {
                               Delete
                             </button>
                           </div>
-                        </li>
-                      
+                        </li> */}
                       </ul>
                     </div>
                   </div>

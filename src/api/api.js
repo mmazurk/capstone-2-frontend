@@ -9,7 +9,6 @@ class MyPhotoAPI {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${MyPhotoAPI.token}` };
@@ -18,7 +17,7 @@ class MyPhotoAPI {
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      console.error("API Error:", err.response);
+      console.error(err.message);
       let message = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
     }
@@ -47,7 +46,7 @@ class MyPhotoAPI {
   }
 
   static async deleteUser(username) {
-    let res = await this.request(`users/${username}`, "delete");
+    let res = await this.request(`users/${username}`, null, "delete");
     return res;
   }
 
@@ -77,12 +76,12 @@ class MyPhotoAPI {
 
   // delete prompt
   static async deletePrompt(id) {
-    let res = await this.request(`prompts/${id}`, "delete");
+    let res = await this.request(`prompts/${id}`, null, "delete");
     return res;
   }
 
 }
 
-MyPhotoAPI.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWF0IjoxNjkzODU4MjgyfQ.i0rem6rJERnJUtHD8lOmrIRkcxdpA2FPHakJKteaaNA";
+// MyPhotoAPI.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWF0IjoxNjkzODU4MjgyfQ.i0rem6rJERnJUtHD8lOmrIRkcxdpA2FPHakJKteaaNA";
 
 export default MyPhotoAPI;

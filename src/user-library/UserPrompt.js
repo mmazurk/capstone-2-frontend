@@ -1,18 +1,20 @@
 
-function UserPrompt({date, promptText}) {
+function UserPrompt({date, promptText, remove}) {
+
+  console.log("Remove function", remove);
 
     return (
         <>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
+        <li className="list-group-item d-flex justify-content-between align-items-center">
         <span>
           <strong>{date}:</strong>&nbsp;{promptText}
         </span>
         <div>
-          <button class="btn btn-outline-primary btn-sm mr-2">
-            Favorite
+          <button className="btn btn-outline-primary btn-sm mr-2">
+            Run Again
           </button>
-          <button class="btn btn-outline-danger btn-sm">
-            Delete
+          <button className="btn btn-outline-danger btn-sm" onClick={remove}>
+            Remove Prompt
           </button>
         </div>
       </li>

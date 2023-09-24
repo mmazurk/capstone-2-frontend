@@ -17,19 +17,13 @@ function App() {
   const [infoLoaded, setInfoLoaded] = useState(true);
   const [user, setUser] = useState(null);
   const [userPrompts, setUserPrompts] = useState([])
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState(null)
-
-  useEffect(() => {
-  console.log("Current user", user);
-  console.log("Current userPrompts", userPrompts);
-  console.log("Current isLoggedIn", isLoggedIn)
-  console.log("Current token: ", token);
-}, [token])
+  const [token, setToken] = useState(localStorage.getItem("myAItoken"))
+  const [isLoggedIn, setIsLoggedIn] = useState(!!token);
 
     // this was added
   useEffect(
     function loadUserInfo() {
+      console.log("loadUserInfo just ran");
       async function getCurrentUser() {
         if (token) {
           try {
@@ -40,14 +34,14 @@ function App() {
             let currentPrompts = await MyPhotoAPI.getPrompts();
             setUserPrompts(currentPrompts);
           } catch (err) {
-            console.error("App loadUserInfo: problem loading", err);
-            setUser(null);
+            console.log("You just failed with these errors:", err)
           }
         }
         setInfoLoaded(true);
       }
       setInfoLoaded(false);
-      getCurrentUser();
+      getCurrentUser().then(
+      console.log("Current user:", user,  "\nCurrent userPrompts", userPrompts, "\nCurrent isLoggedIn", isLoggedIn, "\nCurrent token: ", token));
     },
     [token]
   );
@@ -56,16 +50,20 @@ function App() {
   async function signUp(formData) {
     try {
       let token = await MyPhotoAPI.signUpUser(formData);
-      debugger;
-      setToken(token);
+      if(token) {
+        localStorage.setItem("myAItoken", token);
+        setToken(token);
+        setIsLoggedIn(true);
+      }
       return { status: true };
-    } catch (error) {
-      console.error("The sign-in did not work.");
-      return { status: false, error };
+    } catch (err) {
+      console.error("You just failed with these errors:", err);
+      return { status: false, err };
     }
   }
 
-  async function logout(user) {
+  async function logout() {
+    localStorage.removeItem("myAItoken")
     setToken(null);
     setIsLoggedIn(false);
     setUserPrompts([]);
@@ -78,11 +76,18 @@ function App() {
       if (token) {
         setToken(token);
         setIsLoggedIn(true);
+        localStorage.setItem("myAItoken", token)
         return "success";
       }
     } catch (err) {
       return err; 
     }
+  }
+
+
+  // work on this next!
+  async function edit(formData) {
+    console.log("hooray");
   }
 
   if(infoLoaded) {
@@ -97,6 +102,7 @@ function App() {
             <Route path="/library" element={<UserLibrary promptList={userPrompts} />} />
             <Route path="/searches" element={<SearchPage />} />
             <Route path="/login" element={<LoginForm login={login} />} />
+            <Route path="/profile" element={<ProfileForm edit={edit} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
             <Route path="/signup" element={<SignUpForm signUp={signUp} />} />
             <Route path="/profile" element={<ProfileForm />} />
