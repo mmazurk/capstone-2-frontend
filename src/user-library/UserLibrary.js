@@ -1,16 +1,31 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import MyPhotoAPI from '../api/api';
 import './userLibrary.css'
 import UserPrompt from './UserPrompt';
+import UserContext from "../auth/userContext";
 
 function UserLibrary({ promptList }) {
+  const { user } = useContext(UserContext);
   const [prompts, setPrompts] = useState([]);
 
-  useEffect(() => {
-    const formattedPrompts = formatPrompts(promptList);
-    setPrompts(formattedPrompts);
-  }, [promptList])
+  useEffect(
+    function loadPrompts() {
+      console.log("loadPrompts() running ... ");
+      async function getData() {
+        if (user) {
+          let prompts = await MyPhotoAPI.getPrompts(user);
+          console.log(prompts);
+          const formattedPrompts = formatPrompts(promptList);
+          setPrompts(formattedPrompts);
+        }
+      }
+      getData();
+      // const formattedPrompts = formatPrompts(promptList);
+      // setPrompts(formattedPrompts);
+    },
+    [promptList]
+  );
 
   // helper function to format promptdates
   function formatPrompts(list) {

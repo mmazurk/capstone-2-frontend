@@ -40,8 +40,7 @@ function App() {
         setInfoLoaded(true);
       }
       setInfoLoaded(false);
-      getCurrentUser().then(
-      console.log("Current user:", user,  "\nCurrent userPrompts", userPrompts, "\nCurrent isLoggedIn", isLoggedIn, "\nCurrent token: ", token));
+      getCurrentUser();
     },
     [token]
   );
@@ -57,7 +56,7 @@ function App() {
       }
       return { status: true };
     } catch (err) {
-      console.error("You just failed with these errors:", err);
+      console.error("signup() failed with these errors:", err);
       return { status: false, err };
     }
   }
@@ -84,11 +83,19 @@ function App() {
     }
   }
 
-
-  // work on this next!
-  async function edit(formData) {
-    console.log("hooray");
+  async function edit(user, formData) {
+    try {
+      const reply = await MyPhotoAPI.patchUser(user, formData);
+      if(reply) {
+        return {status: true};
+      }
+    }
+    catch(err) {
+      console.error("edit() failed wiith error", err);
+      return err; 
+    }
   }
+
 
   if(infoLoaded) {
   return (
@@ -102,10 +109,9 @@ function App() {
             <Route path="/library" element={<UserLibrary promptList={userPrompts} />} />
             <Route path="/searches" element={<SearchPage />} />
             <Route path="/login" element={<LoginForm login={login} />} />
-            <Route path="/profile" element={<ProfileForm edit={edit} />} />
+            <Route path="/profile" element={<ProfileForm edit={edit} user={user} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
             <Route path="/signup" element={<SignUpForm signUp={signUp} />} />
-            <Route path="/profile" element={<ProfileForm />} />
             <Route
               path="*"
               element={<p>Hmmm. I can't seem to find what you want.</p>}

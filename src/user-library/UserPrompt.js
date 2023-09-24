@@ -1,7 +1,6 @@
 
 function UserPrompt({date, promptText, remove}) {
 
-  console.log("Remove function", remove);
 
     return (
         <>

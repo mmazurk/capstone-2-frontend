@@ -1,19 +1,43 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormItem from "../auth/FormItem";
 import Alert from "../common/Alert";
+import MyPhotoAPI from "../api/api";
+import LoadingIconHome from "../common/LoadingIconHome";
 
-function ProfileForm({ edit }) {
+function ProfileForm({ edit, user }) {
   const navigate = useNavigate();
-
-  // this is where you grab the user's current data and populate it
-  const initialState = {
-    username: "",
-    password: "",
-  };
-
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+  async function loadUser() {
+    if (!user) {
+      console.log("No user value yet");
+      setIsLoading(true);
+      return;
+    }
+    try {
+      const apiFields = await MyPhotoAPI.getUser(user);
+      console.log(apiFields);
+      return   {
+        username: apiFields.username,
+        firstName: apiFields.firstName,
+        lastName: apiFields.lastName,
+        email: apiFields.email
+      };
+    }
+    catch(err) {
+      console.log("loaduser() failed with", err)
+    }
+  }
+
+  loadUser().then((userData) => {
+    setFormData(userData);
+    setIsLoading(false)});
+  }, [user]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,22 +47,29 @@ function ProfileForm({ edit }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    edit(formData).then(function (status) {
-      if (status === "success") {
+    console.log(user);
+    console.log(formData);
+    try {
+      let status = await edit(user, formData);
+      console.log(status);
+      if (status) {
         navigate("/");
-      } else {
-        console.log("Login did not work");
-        setFormError(status);
       }
-    });
+    } catch (err) {
+      console.log("handeSubmit() had some errors", err);
+    }
   };
+    
 
+  if(isLoading) { 
+    return <LoadingIconHome />
+  } else {
   return (
     <div className="centered">
       <div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-5">
-        <h1 className="display-5 fw-bold">Login To Your Account</h1>
+        <h1 className="display-5 fw-bold">Make Profile Changes</h1>
         <div className="card bg-secondary-subtle">
           <div className="card-body">
             <form>
@@ -59,7 +90,7 @@ function ProfileForm({ edit }) {
         </div>
       </div>
     </div>
-  );
+  );}
 }
 
 export default ProfileForm;
