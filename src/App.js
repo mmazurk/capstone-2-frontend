@@ -91,7 +91,7 @@ function App() {
       }
     }
     catch(err) {
-      console.error("edit() failed wiith error", err);
+      console.error("edit() failed wiith error(s)", err);
       return err; 
     }
   }

@@ -30,6 +30,7 @@ function ProfileForm({ edit, user }) {
     }
     catch(err) {
       console.log("loaduser() failed with", err)
+      setFormError(err);
     }
   }
 
@@ -47,6 +48,9 @@ function ProfileForm({ edit, user }) {
     }));
   };
 
+  // I need to fix the logic on this so if an error is thrown
+  // I can display to the user that something needs to be fixed
+  // I should use similar logic ot my LoginForm.js
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(user);
@@ -56,10 +60,10 @@ function ProfileForm({ edit, user }) {
       console.log(status);
       if (status) {
         navigate("/");
-      }
+      } 
     } catch (err) {
       console.log("handeSubmit() had some errors", err);
-    }
+      }
   };
     
 
@@ -84,6 +88,9 @@ function ProfileForm({ edit, user }) {
               {formError ? <Alert type="danger" messages={[formError]} /> : null}
               <button onClick={handleSubmit} className="btn btn-primary">
                 Submit
+              </button>
+              <button onClick={() => navigate("/")} className="btn btn-tertiary">
+                Return
               </button>
             </form>
           </div>

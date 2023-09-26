@@ -1,4 +1,5 @@
 
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from 'react';
 import MyPhotoAPI from '../api/api';
 import './userLibrary.css'
@@ -6,6 +7,7 @@ import UserPrompt from './UserPrompt';
 import UserContext from "../auth/userContext";
 
 function UserLibrary({ promptList }) {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [prompts, setPrompts] = useState([]);
 
@@ -16,7 +18,8 @@ function UserLibrary({ promptList }) {
         if (user) {
           let prompts = await MyPhotoAPI.getPrompts(user);
           console.log(prompts);
-          const formattedPrompts = formatPrompts(promptList);
+          // const formattedPrompts = formatPrompts(promptList);
+          const formattedPrompts = formatPrompts(prompts);
           setPrompts(formattedPrompts);
         }
       }
@@ -82,6 +85,7 @@ function UserLibrary({ promptList }) {
                       className="mt-4 btn btn-outline-dark"
                       data-mdb-ripple-color="dark"
                       style={{ zIndex: "1" }}
+                      onClick={() => navigate("/profile")}
                     >
                       Edit profile
                     </button>
