@@ -13,13 +13,13 @@ function ProfileForm({ edit, user }) {
 
   useEffect(() => {
   async function loadUser() {
-    if (!user) {
+    if (!user.username) {
       console.log("No user value yet");
       setIsLoading(true);
       return;
     }
     try {
-      const apiFields = await MyPhotoAPI.getUser(user);
+      const apiFields = await MyPhotoAPI.getUser(user.username);
       console.log(apiFields);
       return   {
         username: apiFields.username,
@@ -51,12 +51,13 @@ function ProfileForm({ edit, user }) {
   // I need to fix the logic on this so if an error is thrown
   // I can display to the user that something needs to be fixed
   // I should use similar logic ot my LoginForm.js
+  // Also, if I go back to user-library it is not refreshed there
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(user);
     console.log(formData);
     try {
-      let status = await edit(user, formData);
+      let status = await edit(user.username, formData);
       console.log(status);
       if (status) {
         navigate("/");

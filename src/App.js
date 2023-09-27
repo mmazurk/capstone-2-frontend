@@ -15,7 +15,7 @@ import LoadingIconHome from "./common/LoadingIconHome";
 
 function App() {
   const [infoLoaded, setInfoLoaded] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [userPrompts, setUserPrompts] = useState([])
   const [token, setToken] = useState(localStorage.getItem("myAItoken"))
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
@@ -30,7 +30,7 @@ function App() {
             let { username } = jwtDecode(token);
             MyPhotoAPI.token = token;
             let currentUser = await MyPhotoAPI.getUser(username);
-            setUser(currentUser.username);
+            setUser(currentUser);
             let currentPrompts = await MyPhotoAPI.getPrompts();
             setUserPrompts(currentPrompts);
           } catch (err) {
@@ -131,5 +131,17 @@ function App() {
     </div>
   )
 }
+
+/** One of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it may break at any time.
+
+babel-preset-react-app is part of the create-react-app project, which
+is not maintianed anymore. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away. */
 
 export default App;

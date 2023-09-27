@@ -1,7 +1,7 @@
 const FormItem = ({ field, value, handleChange }) => {
     return (
       <div className="mb-3">
-        <label htmlFor={field} className="form-label">{field}</label>
+        <label htmlFor={field} className="form-label text-capitalize">{field}</label>
         <input
           className="form-control"
           id={field}

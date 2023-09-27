@@ -15,8 +15,8 @@ function UserLibrary({ promptList }) {
     function loadPrompts() {
       console.log("loadPrompts() running ... ");
       async function getData() {
-        if (user) {
-          let prompts = await MyPhotoAPI.getPrompts(user);
+        if (user.username) {
+          let prompts = await MyPhotoAPI.getPrompts(user.username);
           console.log(prompts);
           // const formattedPrompts = formatPrompts(promptList);
           const formattedPrompts = formatPrompts(prompts);
@@ -30,10 +30,10 @@ function UserLibrary({ promptList }) {
     [promptList]
   );
 
-  // helper function to format promptdates
+  // helper function to format prompt dates
   function formatPrompts(list) {
     return list.map((item) => {
-      return { ...item, date: new Date(item.date).toLocaleString() };
+      return { ...item, date: new Date(item.date).toDateString() };
     });
   }
 
@@ -56,7 +56,7 @@ function UserLibrary({ promptList }) {
       <div className="py-3 text-center container-fluid">
         <div className="row">
           <div className="col mx-auto">
-            <h1 className="display-5 fw-bold">User Page</h1>
+            <h1 className="display-5 fw-bold">Your Library Page</h1>
           </div>
         </div>
       </div>
@@ -91,8 +91,8 @@ function UserLibrary({ promptList }) {
                     </button>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
-                    <h5>Sadman22</h5>
-                    <p>Mark Mazurkiewicz</p>
+                    <h5>{user.username}</h5>
+                    <p>{user.firstName + " " + user.lastName}</p>
                   </div>
                 </div>
                 <div
@@ -149,7 +149,8 @@ function UserLibrary({ promptList }) {
                   </div>
                   <div className="d-flex justify-content-between align-items-center">
                     <p className="fs-4 fw-bold mb-0">Tip of the Day</p>
-                  </div>
+                    </div>
+                    <p className="p-4">Be very specific about the style of the image and provide detail about all the elements in it that you want to see!</p>
                 </div>
               </div>
             </div>
