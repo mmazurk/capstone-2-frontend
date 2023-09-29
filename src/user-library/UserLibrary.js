@@ -6,7 +6,7 @@ import './userLibrary.css'
 import UserPrompt from './UserPrompt';
 import UserContext from "../auth/userContext";
 
-function UserLibrary({ promptList }) {
+function UserLibrary() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [prompts, setPrompts] = useState([]);
@@ -27,7 +27,8 @@ function UserLibrary({ promptList }) {
       // const formattedPrompts = formatPrompts(promptList);
       // setPrompts(formattedPrompts);
     },
-    [promptList]
+    // [promptList]
+    []
   );
 
   // helper function to format prompt dates

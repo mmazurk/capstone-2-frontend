@@ -9,7 +9,7 @@ function SearchPhotoResult({prompt, url}) {
 
   async function saveUserPrompt() {
     let data = {
-      username: user,
+      username: user.username,
       title: "MLP placeholder prompt title",
       date: new Date().toISOString().split("T")[0],
       prompt_text: prompt,

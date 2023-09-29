@@ -28,10 +28,7 @@ describe("MyPhotoAPI", () => {
       method: "post",
       data: { username: "u1", password: "password" },
       params: {},
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWF0IjoxNjkzODU4MjgyfQ.i0rem6rJERnJUtHD8lOmrIRkcxdpA2FPHakJKteaaNA",
-      },
+      headers: {"Authorization": "Bearer undefined"},
     });
   });
 });

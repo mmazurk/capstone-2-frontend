@@ -5,7 +5,7 @@ import Alert from "../common/Alert";
 import MyPhotoAPI from "../api/api";
 import LoadingIconHome from "../common/LoadingIconHome";
 
-function ProfileForm({ edit, user }) {
+function ProfileForm({ edit, user, updateUser }) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [formError, setFormError] = useState(null);
@@ -48,22 +48,19 @@ function ProfileForm({ edit, user }) {
     }));
   };
 
-  // I need to fix the logic on this so if an error is thrown
-  // I can display to the user that something needs to be fixed
-  // I should use similar logic ot my LoginForm.js
-  // Also, if I go back to user-library it is not refreshed there
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
-    console.log(formData);
     try {
       let status = await edit(user.username, formData);
-      console.log(status);
-      if (status) {
-        navigate("/");
-      } 
+      if (status === "success") {
+        console.log("status", status)
+        updateUser(formData);
+        navigate("/library");
+      }  
+      setFormError("Error, one of the fields in the wrong format");
     } catch (err) {
-      console.log("handeSubmit() had some errors", err);
+      console.log("handleSubmit() had an error ... ")
       }
   };
     

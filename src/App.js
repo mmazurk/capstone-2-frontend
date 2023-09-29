@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, MemoryRouter } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import Navigation from "./navigation/Navigation";
 import HomePage from "./homepage/HomePage";
@@ -12,6 +12,8 @@ import ProfileForm from "./profiles/ProfileForm";
 import MyPhotoAPI from "./api/api";
 import UserContext from "./auth/userContext";
 import LoadingIconHome from "./common/LoadingIconHome";
+
+const Router = process.env.NODE_ENV === 'test' ? MemoryRouter : BrowserRouter;
 
 function App() {
   const [infoLoaded, setInfoLoaded] = useState(true);
@@ -30,6 +32,7 @@ function App() {
             let { username } = jwtDecode(token);
             MyPhotoAPI.token = token;
             let currentUser = await MyPhotoAPI.getUser(username);
+            delete currentUser.prompts; // I don't use these for anything
             setUser(currentUser);
             let currentPrompts = await MyPhotoAPI.getPrompts();
             setUserPrompts(currentPrompts);
@@ -86,22 +89,25 @@ function App() {
   async function edit(user, formData) {
     try {
       const reply = await MyPhotoAPI.patchUser(user, formData);
-      if(reply) {
-        return {status: true};
+      if(reply.username) {
+        return "success";
       }
     }
     catch(err) {
-      console.error("edit() failed wiith error(s)", err);
       return err; 
     }
+  }
+
+  function updateUser(newUserDetails) {
+    setUser(newUserDetails);
   }
 
 
   if(infoLoaded) {
   return (
     <div>
-      <UserContext.Provider value={{token: token, user: user}}>
-      <BrowserRouter> 
+      <UserContext.Provider value={{user: user}}>
+      <Router> 
         <Navigation isLoggedIn={isLoggedIn} />
         <main>
           <Routes>
@@ -109,7 +115,7 @@ function App() {
             <Route path="/library" element={<UserLibrary promptList={userPrompts} />} />
             <Route path="/searches" element={<SearchPage />} />
             <Route path="/login" element={<LoginForm login={login} />} />
-            <Route path="/profile" element={<ProfileForm edit={edit} user={user} />} />
+            <Route path="/profile" element={<ProfileForm edit={edit} user={user} updateUser={updateUser} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
             <Route path="/signup" element={<SignUpForm signUp={signUp} />} />
             <Route
@@ -118,30 +124,18 @@ function App() {
             />
           </Routes>
         </main>
-      </BrowserRouter>
+      </Router>
       </UserContext.Provider>
     </div>
   )}
   else return (
     <div>
-      <BrowserRouter>
+      <Router>
       <Navigation isLoggedIn={isLoggedIn} />
       <LoadingIconHome />
-      </BrowserRouter>
+      </Router>
     </div>
   )
 }
-
-/** One of your dependencies, babel-preset-react-app, is importing the
-"@babel/plugin-proposal-private-property-in-object" package without
-declaring it in its dependencies. This is currently working because
-"@babel/plugin-proposal-private-property-in-object" is already in your
-node_modules folder for unrelated reasons, but it may break at any time.
-
-babel-preset-react-app is part of the create-react-app project, which
-is not maintianed anymore. It is thus unlikely that this bug will
-ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
-your devDependencies to work around this error. This will make this message
-go away. */
 
 export default App;
