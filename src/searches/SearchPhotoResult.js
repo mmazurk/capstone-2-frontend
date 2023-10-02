@@ -15,7 +15,7 @@ function SearchPhotoResult({prompt, url}) {
       prompt_text: prompt,
       comments: "MLP placedholder comments",
     };
-    console.log(data);
+    // console.log(data);
 
     try {
       setisSaving(true);
@@ -23,10 +23,10 @@ function SearchPhotoResult({prompt, url}) {
       if (res) {
         setisSaving(false);
         setIsSaved(true);
-        console.log("success!")
+        // console.log("success!")
       }
     } catch (err) {
-      console.log("saveUserPrompt() failed with", err);
+      // console.log("saveUserPrompt() failed with", err);
     }
   }
 

@@ -48,7 +48,8 @@ function HomePage() {
                       photos free. After that, we offer generous pricing plans
                       that meet your needs.
                     </p>
-                    <button className="btn btn-outline-secondary" type="button" onClick={() => navigate("/signup")}>
+                    {/* <button className="btn btn-outline-secondary" type="button" onClick={() => navigate("/signup")}> */}
+                    <button className="btn btn-outline-secondary" type="button">
                       Register
                     </button>
                   </div>

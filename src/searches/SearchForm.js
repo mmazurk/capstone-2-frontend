@@ -15,7 +15,7 @@ function SearchForm({promptInstructions, setPhotoURLStatus, setLoading}) {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log("You submitted", formData);
+      // console.log("You submitted", formData);
       setLoading(true);
       
     try {

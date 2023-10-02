@@ -14,13 +14,13 @@ function ProfileForm({ edit, user, updateUser }) {
   useEffect(() => {
   async function loadUser() {
     if (!user.username) {
-      console.log("No user value yet");
+      // console.log("No user value yet");
       setIsLoading(true);
       return;
     }
     try {
       const apiFields = await MyPhotoAPI.getUser(user.username);
-      console.log(apiFields);
+      // console.log(apiFields);
       return   {
         username: apiFields.username,
         firstName: apiFields.firstName,
@@ -29,7 +29,7 @@ function ProfileForm({ edit, user, updateUser }) {
       };
     }
     catch(err) {
-      console.log("loaduser() failed with", err)
+      // console.log("loaduser() failed with", err)
       setFormError(err);
     }
   }
@@ -54,13 +54,13 @@ function ProfileForm({ edit, user, updateUser }) {
     try {
       let status = await edit(user.username, formData);
       if (status === "success") {
-        console.log("status", status)
+        // console.log("status", status)
         updateUser(formData);
         navigate("/library");
       }  
       setFormError("Error, one of the fields in the wrong format");
     } catch (err) {
-      console.log("handleSubmit() had an error ... ")
+      // console.log("handleSubmit() had an error ... ")
       }
   };
     

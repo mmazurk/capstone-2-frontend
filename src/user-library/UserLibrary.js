@@ -13,11 +13,11 @@ function UserLibrary() {
 
   useEffect(
     function loadPrompts() {
-      console.log("loadPrompts() running ... ");
+      // console.log("loadPrompts() running ... ");
       async function getData() {
         if (user.username) {
           let prompts = await MyPhotoAPI.getPrompts(user.username);
-          console.log(prompts);
+          // console.log(prompts);
           // const formattedPrompts = formatPrompts(promptList);
           const formattedPrompts = formatPrompts(prompts);
           setPrompts(formattedPrompts);
@@ -44,10 +44,10 @@ function UserLibrary() {
     setPrompts(refreshedPrompts);
     try {
       let status = await MyPhotoAPI.deletePrompt(promptID);
-      console.log(status);
+      // console.log(status);
 
     } catch (err) {
-      console.log("You just failed with error(s):", err);
+      // console.log("You just failed with error(s):", err);
       setPrompts(originalPrompts);
     }
   }

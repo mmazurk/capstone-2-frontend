@@ -25,7 +25,7 @@ function App() {
     // this was added
   useEffect(
     function loadUserInfo() {
-      console.log("loadUserInfo just ran");
+      // console.log("loadUserInfo just ran");
       async function getCurrentUser() {
         if (token) {
           try {
@@ -37,7 +37,7 @@ function App() {
             let currentPrompts = await MyPhotoAPI.getPrompts();
             setUserPrompts(currentPrompts);
           } catch (err) {
-            console.log("You just failed with these errors:", err)
+            // console.log("You just failed with these errors:", err)
           }
         }
         setInfoLoaded(true);
@@ -102,6 +102,10 @@ function App() {
     setUser(newUserDetails);
   }
 
+  // To disable signup, I need to comment out the /signup route
+  // and disable the button in <Navigation>
+  // I should also turn it off server side
+  
 
   if(infoLoaded) {
   return (
@@ -117,7 +121,7 @@ function App() {
             <Route path="/login" element={<LoginForm login={login} />} />
             <Route path="/profile" element={<ProfileForm edit={edit} user={user} updateUser={updateUser} />} />
             <Route path="/logout" element={<Logout logout={logout} />} />
-            <Route path="/signup" element={<SignUpForm signUp={signUp} />} />
+            {/* <Route path="/signup" element={<SignUpForm signUp={signUp} />} /> */}
             <Route
               path="*"
               element={<p>Hmmm. I can't seem to find what you want.</p>}

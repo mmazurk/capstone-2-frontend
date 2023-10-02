@@ -1,7 +1,8 @@
 
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+// const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = process.env.BASE_API_URL || "http://localhost:3001";
 
 
 class MyPhotoAPI {
@@ -81,7 +82,5 @@ class MyPhotoAPI {
   }
 
 }
-
-// MyPhotoAPI.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWF0IjoxNjkzODU4MjgyfQ.i0rem6rJERnJUtHD8lOmrIRkcxdpA2FPHakJKteaaNA";
 
 export default MyPhotoAPI;

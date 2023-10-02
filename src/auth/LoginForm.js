@@ -27,7 +27,7 @@ function LoginForm({ login }) {
       if (status === "success") {
         navigate("/");
       } else {
-        console.log("Login did not work");
+        // console.log("Login did not work");
         setFormError(status);
       }
     });

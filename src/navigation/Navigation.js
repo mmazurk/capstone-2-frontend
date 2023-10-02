@@ -41,9 +41,9 @@ function Navigation({isLoggedIn}) {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/signup" className="nav-link">
+                {/* <NavLink to="/signup" className="nav-link">
                   Sign Up
-                </NavLink>
+                </NavLink> */}
               </li>
 
             </ul>
